@@ -26,7 +26,7 @@ class Redis2Irc(irc3.IrcBot):
     def start(self):
         while True:
             try:
-                yield from self.redislistener()
+                yield from self.process_message()
             except Exception:
                 self.log.critical(traceback.format_exc())
                 self.log.info("...restarting Redis listener in a few seconds.")
@@ -34,7 +34,7 @@ class Redis2Irc(irc3.IrcBot):
 
 
     @asyncio.coroutine
-    def get_message(self):
+    def process_message(self):
         """
         :type bot: Redis2Irc
         """
