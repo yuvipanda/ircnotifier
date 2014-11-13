@@ -17,6 +17,7 @@ class Redis2Irc(irc3.IrcBot):
         """
         super(Redis2Irc, self).__init__(**kwargs)
         self._conf = conf
+        self.joined_channels = set()
 
     @property
     def conf(self):
@@ -43,16 +44,15 @@ class Redis2Irc(irc3.IrcBot):
 
         while True:
             try:
-                future = yield from connection.blpop([self.conf.get('REDIS_QUEUE_NAME')])
+                future = yield from connection.blpop([self.conf.get('REDIS_QUEUE_NAME', 'ircnotifier')])
                 message = json.loads(future.value)
-                channels = message['channels']
+                channels = set(message['channels'])
                 message = message['message']
-                # FIXME: Actually join channel if they aren't joined already
-                # FIXME: Actually send message, yo!
+                to_join = channels.difference(self.joined_channels)
+                for chan in to_join:
+                    self.join(chan)
+                for chan in channels:
+                    self.privmsg(chan, message)
             except:
                 self.log.critical(traceback.format_exc())
                 yield from asyncio.sleep(1)
-
-
-if __name__ == '__main__':
-    main()
