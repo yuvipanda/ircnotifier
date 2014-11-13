@@ -15,6 +15,7 @@ bot = Redis2Irc(
     includes=[
         'irc3.plugins.core',
         'irc3.plugins.ctcp',
+        'irc3.plugins.autojoins',
         __name__,  # this register MyPlugin
     ],
     verbose=True,
