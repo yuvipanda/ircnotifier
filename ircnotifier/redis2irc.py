@@ -35,9 +35,6 @@ class Redis2Irc(irc3.IrcBot):
 
     @asyncio.coroutine
     def process_message(self):
-        """
-        :type bot: Redis2Irc
-        """
         # Create connection
         connection = yield from asyncio_redis.Connection.create(
             host=self.conf.get('REDIS_HOST', 'localhost'),
@@ -56,32 +53,6 @@ class Redis2Irc(irc3.IrcBot):
                 self.log.critical(traceback.format_exc())
                 yield from asyncio.sleep(1)
 
-
-def main():
-    conf = {},
-    bot = Redis2Irc(
-        conf=conf,
-        nick=conf.get('IRC_NICK', 'ircnotifier'),
-        host=conf.get('IRC_SERVER', 'chat.freenode.net'),
-        port=7000,
-        ssl=True,
-        password=conf.get('IRC_PASSWORD'),
-        realname='ircnotifier',
-        userinfo='IRCNotifier v1, https://github.com/yuvipanda/ircnotifier',
-        includes=[
-            'irc3.plugins.core',
-            'irc3.plugins.ctcp',
-            __name__,  # this register MyPlugin
-        ],
-        verbose=True,
-        ctcp={
-            'version': 'ircnotifier %s running on irc3 {version}. See {url} for more details.' % __version__,
-            'userinfo': '{userinfo}',
-            'ping': 'PONG',
-        }
-    )
-    asyncio.Task(bot.start())
-    bot.run()
 
 if __name__ == '__main__':
     main()
