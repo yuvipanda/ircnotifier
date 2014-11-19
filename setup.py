@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="ircnotifier",
+    name="ircyall",
     version='0.1',
     author="Yuvi Panda",
     author_email="yuvipanda@gmail.com",
@@ -9,5 +9,5 @@ setup(
     license="Apache2",
     url="https://pypi.python.org/pypi/ircnotifier/0.0.2",
     packages=find_packages(),
-    scripts=['scripts/ircnotifier']
+    scripts=['scripts/ircyall']
 )

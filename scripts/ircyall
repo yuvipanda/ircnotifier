@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import asyncio
-from ircnotifier.redis2irc import Redis2Irc
+from ircyall.redis2irc import Redis2Irc
 
 conf = {}
 bot = Redis2Irc(
